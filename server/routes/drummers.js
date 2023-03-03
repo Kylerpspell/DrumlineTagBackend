@@ -1,15 +1,18 @@
-const express = require('express');
+const express = require("express");
+
+
 const drummerRoutes = express.Router();
-const ObjectId = require('mongodb').ObjectID;
 const dbo = require("../db/conn");
+const ObjectId = require("mongodb").ObjectId;
 
-
-drummerRoutes.route('/drummers').get(async function (req, res) {
-    let dbConnect = dbo.getDb();
-    dbConnect.collection('drummers').find({}).toArray(function (err, result) {
-        if (err) throw err;
-        res.json(result);
-    });
-});
+// get all drummers
+drummerRoutes.route("/drummers").get(function (req, res) {
+	  console.log("GET /drummers");
+	  let db_connect = dbo.getDb("drumlineData");
+	  db_connect.collection("drummers").find({}).toArray(function (err, result) {
+			if (err) throw err;
+			res.json(result);
+		});
+	});
 
 module.exports = drummerRoutes;
