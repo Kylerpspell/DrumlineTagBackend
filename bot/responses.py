@@ -1,3 +1,4 @@
+'''
 import random
 import re
 
@@ -26,3 +27,4 @@ def get_response(message: str) -> str:
     
 
     return
+'''
