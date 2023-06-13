@@ -15,6 +15,7 @@ drummerRoutes.route("/drummers").get(function (req, res) {
 	});
 });
 
+// get drummer by id
 drummerRoutes.route("/drummers/:id").get(function (req, res) {
   console.log("GET /drummers/:id");
   let db_connect = dbo.getDb("drumlineData");
@@ -31,8 +32,8 @@ drummerRoutes.route("/drummers/add").post(function (req, res) {
 	let db_connect = dbo.getDb("drumlineData");
 	let myobj = {
 		name: req.body.name,
-		year: req.body.year,
-		section: req.body.section,
+		year: "N/A",
+		section: "N/A",
 		numtags: 0,
 		numtagged: 0
 	};

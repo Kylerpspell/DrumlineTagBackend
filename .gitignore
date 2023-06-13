@@ -1,0 +1,3 @@
+bot/apikeys.py
+*.jpg
+bot/__pycache__/
