@@ -30,10 +30,21 @@ drummerRoutes.route("/drummers/:id").get(function (req, res) {
 drummerRoutes.route("/drummers/add").post(function (req, res) {
 	console.log("POST /drummers/add");
 	let db_connect = dbo.getDb("drumlineData");
+	
+	optionalYear = req.body.year;
+	if (optionalYear == '') {
+		optionalYear = "N/A";
+	}
+
+	optionalSection = req.body.section;
+	if (optionalSection == '') {
+		optionalSection = "N/A";
+	}
+	
 	let myobj = {
 		name: req.body.name,
-		year: "N/A",
-		section: "N/A",
+		year: optionalYear,
+		section: optionalSection,
 		numtags: 0,
 		numtagged: 0
 	};

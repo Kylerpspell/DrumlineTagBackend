@@ -11,6 +11,40 @@ from apikeys import BOTTOKEN, BACKEND
 
 client = commands.Bot(command_prefix = '!', intents = discord.Intents.all())
 
+def add_tag_to_db(tagger, tagged):
+					print("Adding tag")
+					# Check to see if the tagger and tagged are in the database
+					r = requests.get(BACKEND + "drummers")
+					drummers = r.json()
+					tagger_id = None
+					tagged_id = None
+					if drummers is not None:
+						for drummer in drummers:
+							if drummer["name"] == tagger:
+								tagger_id = drummer["_id"]
+							if drummer["name"] == tagged:
+								tagged_id = drummer["_id"]
+					
+					# If the tagger is not in the database, add them
+					if tagger_id is None:
+						r = requests.post(BACKEND + "drummers/add", json={"name": tagger})
+					# If the tagged is not in the database, add them
+					if tagged_id is None:
+						r = requests.post(BACKEND + "drummers/add", json={"name": tagged})
+
+					# Get the tagger and tagged ids
+					r = requests.get(BACKEND + "drummers")
+					drummers = r.json()
+					for drummer in drummers:
+						if drummer["name"] == tagger:
+							tagger_id = drummer["_id"]
+						if drummer["name"] == tagged:
+							tagged_id = drummer["_id"]
+
+					# Add the tag to the database
+					print("tagger_id", tagger_id, "tagged_id", tagged_id)
+					r = requests.post(BACKEND + "tags/add", json={"tagger": tagger_id, "tagged": tagged_id, "date": datetime.now().isoformat()})
+					print("Tag added")
 @client.event
 async def on_ready():
 	print("The bot is now ready for use!")
@@ -51,71 +85,13 @@ async def tag(ctx):
 					await ctx.send("When I was young my dad use to hit me with a Polaroid. I still get instant flashbacks...")
 				if roll == 6:
 					await ctx.send("They never saw it coming...")
-				stringTag = ctx.message.author.display_name
-				stringTagged = tagged
 				await ctx.send("Sorry {}".format(tagged))
 
-				# Check to see if the tagger is already in the database
-				r = requests.get(BACKEND + "drummers/")
-				if r.status_code == 200:
-					drummers = r.json()
-					if stringTag not in drummers:
-						# Add the drummer to the database
-						r = requests.post(BACKEND + "drummers/add", json={"name": stringTag})
-						if r.status_code == 200:
-							print("Tagger added successfully")
-					
-					if stringTagged not in drummers:
-						# Add the drummer to the database
-						r = requests.post(BACKEND + "drummers/add", json={"name": stringTagged})
-						if r.status_code == 200:
-							print("Tagged added successfully")
-				else:
-					print("Error getting drummers")
-					print(r.text)
-					await ctx.send("Error getting drummers. Please try again later.")
+				add_tag_to_db(ctx.message.author.display_name, tagged)
+
 				
-				# find the drummer's id's
-				r = requests.get(BACKEND + "drummers/")
-				if r.status_code == 200:
-					drummers = r.json()
-					print(drummers)
-					taggerId = ""
-					taggedId = ""
-					for drummer in drummers:
-						if drummer["name"] == stringTag:
-							taggerId = drummer["_id"]
-						if drummer["name"] == stringTagged:
-							taggedId = drummer["_id"]
-					
-					if taggerId == "":
-						print("Error: taggerId not found")
-						await ctx.send("Error: taggerId not found")
-						return
-					if taggedId == "":
-						print("Error: taggedId not found")
-						await ctx.send("Error: taggedId not found")
-						return
 
-				else:
-					print("Error getting drummers")
-					print(r.text)
-					await ctx.send("Error getting drummers. Please try again later.")
 
-				# Send the tag to the backend
-				body = {
-					"tagger": taggerId,
-					"tagged": taggedId,
-					"date": datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-				}
-				r = requests.post(BACKEND + "tags/add", json=body)
-				print("Sent tag to backend")
-				if r.status_code == 200:
-					print("Tag saved successfully")
-				else:
-					print("Error saving tag")
-					print(r.text)
-					await ctx.send("Error saving tag. Please try again later.")
 
 @client.command(pass_context = True)
 async def hello(ctx):
@@ -149,6 +125,5 @@ async def save(ctx):
 				print('Saving image: ' + imageName)
 				shutil.copyfileobj(r.raw, out_file)
 '''     
-
 
 client.run(BOTTOKEN)
