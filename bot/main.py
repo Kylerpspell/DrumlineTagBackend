@@ -45,6 +45,12 @@ def add_tag_to_db(tagger, tagged):
 					print("tagger_id", tagger_id, "tagged_id", tagged_id)
 					r = requests.post(BACKEND + "tags/add", json={"tagger": tagger_id, "tagged": tagged_id, "date": datetime.now().isoformat()})
 					print("Tag added")
+     
+def add_section_to_db(user, section):
+	print("I NEED HELP!!!")
+def add_year_to_db(user, year):
+    print("I NEED HELP!!!")
+
 @client.event
 async def on_ready():
 	print("The bot is now ready for use!")
@@ -101,6 +107,7 @@ async def section(ctx, arg = None):
     
 	if(arg == 'Snare' or arg == 'Bass' or arg == 'Tenor' or arg == 'Cymbol' or arg == 'Flub'):
 		await ctx.send("Got it, you are a " + arg + " player!" "\nGood luck " + arg + " line!")
+		add_section_to_db(ctx.message.author.display_name, arg)
 		print("Section is " + arg + ".")
 	else:
 		await ctx.send("That is not a section...")
@@ -114,6 +121,7 @@ async def section(ctx, arg = None):
 async def year(ctx, arg = None):
     if(arg == 'Senior' or arg == 'Junior' or arg == 'Sophomore' or arg == 'Freshman'):
         await ctx.send("Got it, you are a " + arg + "\nWe can't wait for you to do big things this semester!")
+        add_year_to_db(ctx.message.author.display_name, arg)
         print("Year is " + arg + ".")
     else:
         await ctx.send("That is not a valid year...")
