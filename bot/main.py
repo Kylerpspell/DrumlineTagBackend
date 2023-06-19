@@ -96,7 +96,32 @@ async def tag(ctx):
 @client.command(pass_context = True)
 async def hello(ctx):
 	await ctx.send("Hello {}!".format(ctx.message.author.mention))
-
+@client.command(pass_context = True)
+async def section(ctx, arg = None):
+    
+	if(arg == 'Snare' or arg == 'Bass' or arg == 'Tenor' or arg == 'Cymbol' or arg == 'Flub'):
+		await ctx.send("Got it, you are a " + arg + " player!" "\nGood luck " + arg + " line!")
+		print("Section is " + arg + ".")
+	else:
+		await ctx.send("That is not a section...")
+		print("Invalid section.")
+	if(arg == None):
+		await ctx.send("Be sure to enter what section you are in after typing in !section")
+		print("Did not enter a section.")
+    #arg = the section of the student
+    
+@client.command(pass_context = True)
+async def year(ctx, arg = None):
+    if(arg == 'Senior' or arg == 'Junior' or arg == 'Sophomore' or arg == 'Freshman'):
+        await ctx.send("Got it, you are a " + arg + "\nWe can't wait for you to do big things this semester!")
+        print("Year is " + arg + ".")
+    else:
+        await ctx.send("That is not a valid year...")
+        print("Invalid year.")
+    if(arg == None):
+        await ctx.send("Be sure to enter what class year you are after typing in !year (Senior, Junior, Sophomore, or Freshman)")
+        print("Did not enter a year")
+     
 @client.command(pass_context = True)
 async def assist(ctx):
 	await ctx.send("Hey! My names Spot, The Drumline Tag Bot!  \nThis year I will be helping to keep track of the Drumline Tag score to make your life easier." 
