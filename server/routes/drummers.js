@@ -65,17 +65,31 @@ drummerRoutes.route("/drummers/:id/remove").delete(function (req, res) {
 	});
 });
 
-// Update a drummer
-drummerRoutes.route("/drummers/:id/update").put(function (req, res) {
-	console.log("PUT /drummers/:id");
+// Update a drummer Section
+drummerRoutes.route("/drummers/:id/updateSection").put(function (req, res) {
+	console.log("PUT /drummers/:id/updateSection");
 	let db_connect = dbo.getDb("drumlineData");
 	let myquery = { _id: ObjectId(req.params.id) };
-	let newvalues = { $set: { name: req.body.drummerName, year: req.body.drummerYear, section: req.body.drummerSection } };
+	let newvalues = { $set: { section: req.body.section } };
 	db_connect.collection("drummers").updateOne(myquery, newvalues, function (err, result) {
 		if (err) throw err;
 		res.json(result);
 	});
 });
+
+// Update a drummer Year
+drummerRoutes.route("/drummers/:id/updateYear").put(function (req, res) {
+	console.log("PUT /drummers/:id/updateYear");
+	let db_connect = dbo.getDb("drumlineData");
+	let myquery = { _id: ObjectId(req.params.id) };
+	let newvalues = { $set: { year: req.body.year } };
+	db_connect.collection("drummers").updateOne(myquery, newvalues, function (err, result) {
+		if (err) throw err;
+		res.json(result);
+	});
+});
+
+
 
 // Add a tag to a drummer
 drummerRoutes.route("/drummers/:id/addtag").put(function (req, res) {
