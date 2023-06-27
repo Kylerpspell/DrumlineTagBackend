@@ -45,12 +45,11 @@ def add_tag_to_db(tagger, tagged):
 	# If the tagger is not in the database, return an error
 	if tagger_id is None:
 		print("Tagger not found")
-		return
+		return False
 	
 	# If the tagged is not in the database, add them
 	if tagged_id is None:
 		r = requests.post(BACKEND + "drummers/add", json={"name": tagged})
-
 	# Get the tagger and tagged ids
 	r = requests.get(BACKEND + "drummers")
 	drummers = r.json()
@@ -64,7 +63,8 @@ def add_tag_to_db(tagger, tagged):
 	print("tagger_id", tagger_id, "tagged_id", tagged_id)
 	r = requests.post(BACKEND + "tags/add", json={"tagger": tagger_id, "tagged": tagged_id, "date": datetime.now().isoformat()})
 	print("Tag added")
-     
+	return True
+	 
 
 def add_section_to_db(user, section):
 	# Find the user in the database
@@ -115,6 +115,14 @@ async def on_ready():
 	print("The bot is now ready for use!")
 	print("------------------------------")
 
+
+@client.command(pass_context = True)
+async def play(ctx):
+	playerName = ctx.message.author.display_name
+	requests.post(BACKEND + "drummers/add", json={"name": playerName})
+	await ctx.send("You have been added to the database!")
+
+
 @client.command(pass_context = True)
 async def tag(ctx):
 		roll = int(random.randint(1,6))
@@ -153,18 +161,16 @@ async def tag(ctx):
 				await ctx.send("Sorry {}".format(tagged))
 
 				add_tag_to_db(ctx.message.author.display_name, tagged)
-
-				
-
-
+		
 
 @client.command(pass_context = True)
 async def hello(ctx):
 	await ctx.send("Hello {}!".format(ctx.message.author.mention))
+
 @client.command(pass_context = True)
 async def section(ctx, arg = None):
-    
-	if(arg == 'Snare' or arg == 'Bass' or arg == 'Tenor' or arg == 'Cymbol' or arg == 'Flub'):
+	arg = arg.lower()
+	if(arg == 'snare' or arg == 'bass' or arg == 'tenor' or arg == 'cymbal' or arg == 'flub'):
 		await ctx.send("Got it, you are a " + arg + " player!" "\nGood luck " + arg + " line!")
 		add_section_to_db(ctx.message.author.display_name, arg)
 		print("Section is " + arg + ".")
@@ -174,21 +180,23 @@ async def section(ctx, arg = None):
 	if(arg == None):
 		await ctx.send("Be sure to enter what section you are in after typing in !section")
 		print("Did not enter a section.")
-    #arg = the section of the student
-    
+
+  
 @client.command(pass_context = True)
 async def year(ctx, arg = None):
-    if(arg == 'Senior' or arg == 'Junior' or arg == 'Sophomore' or arg == 'Freshman'):
-        await ctx.send("Got it, you are a " + arg + "\nWe can't wait for you to do big things this semester!")
-        add_year_to_db(ctx.message.author.display_name, arg)
-        print("Year is " + arg + ".")
-    else:
-        await ctx.send("That is not a valid year...")
-        print("Invalid year.")
-    if(arg == None):
-        await ctx.send("Be sure to enter what class year you are after typing in !year (Senior, Junior, Sophomore, or Freshman)")
-        print("Did not enter a year")
-     
+	arg = arg.lower()
+	if(arg == 'senior' or arg == 'junior' or arg == 'sophomore' or arg == 'freshman'):
+		await ctx.send("Got it, you are a " + arg + "\nWe can't wait for you to do big things this semester!")
+		add_year_to_db(ctx.message.author.display_name, arg)
+		print("Year is " + arg + ".")
+	else:
+		await ctx.send("That is not a valid year...")
+		print("Invalid year.")
+	if(arg == None):
+		await ctx.send("Be sure to enter what class year you are after typing in !year (Senior, Junior, Sophomore, or Freshman)")
+		print("Did not enter a year")
+
+
 @client.command(pass_context = True)
 async def assist(ctx):
 	await ctx.send("Hey! My names Spot, The Drumline Tag Bot!  \nThis year I will be helping to keep track of the Drumline Tag score to make your life easier." 
