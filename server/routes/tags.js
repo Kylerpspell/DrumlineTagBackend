@@ -23,7 +23,8 @@ tagRoutes.route("/tags/add").post(function (req, res) {
     let myobj = {
         tagger: req.body.tagger,
         tagged: req.body.tagged,
-        date: req.body.date
+        date: req.body.date,
+        img_url: req.body.img_url
     };
 
     db_connect.collection("tags").insertOne(myobj, function (err, result) {

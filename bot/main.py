@@ -14,21 +14,19 @@ client = commands.Bot(command_prefix = '!', intents = discord.Intents.all())
 
 def tests():
 	# Add section to database
-	add_section_to_db("Test1", "bass")
-	add_section_to_db("Test2", "cymbals")
-	add_section_to_db("Test3", "tenor")
-	add_section_to_db("Test4", "flub")
-	add_section_to_db("Test5", "snare")
+	add_section_to_db("Benny Boy", "bass")
+	add_section_to_db("DORITO", "cymbals")
+
 
 	# Add year to database
-	add_year_to_db("Test1", 2021)
-	add_year_to_db("Test2", 2020)
-	add_year_to_db("Test3", 2019)
-	add_year_to_db("Test4", 2018)
-	add_year_to_db("Test5", 2017)
+	add_year_to_db("DORITO", 2023)
+	add_year_to_db("Benny Boy", 2024)
 
 
-def add_tag_to_db(tagger, tagged):
+	add_tag_to_db("Benny Boy", "DORITO", 'https://media.discordapp.net/attachments/1072933532189589506/1119434180435116093/download.jpg')
+	add_tag_to_db("DORITO", "Benny Boy", 'https://media.discordapp.net/attachments/1072933532189589506/1119434180435116093/download.jpg')
+
+def add_tag_to_db(tagger, tagged, img_url):
 	print("Adding tag")
 	# Check to see if the tagger and tagged are in the database
 	r = requests.get(BACKEND + "drummers")
@@ -61,7 +59,7 @@ def add_tag_to_db(tagger, tagged):
 
 	# Add the tag to the database
 	print("tagger_id", tagger_id, "tagged_id", tagged_id)
-	r = requests.post(BACKEND + "tags/add", json={"tagger": tagger_id, "tagged": tagged_id, "date": datetime.now().isoformat()})
+	r = requests.post(BACKEND + "tags/add", json={"tagger": tagger_id, "tagged": tagged_id, "date": datetime.now().isoformat(), "img_url": img_url})
 	print("Tag added")
 	return True
 	 
@@ -160,7 +158,7 @@ async def tag(ctx):
 					await ctx.send("They never saw it coming...")
 				await ctx.send("Sorry {}".format(tagged))
 
-				add_tag_to_db(ctx.message.author.display_name, tagged)
+				add_tag_to_db(ctx.message.author.display_name, tagged, url)
 		
 
 @client.command(pass_context = True)
