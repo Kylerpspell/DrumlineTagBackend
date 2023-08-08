@@ -168,7 +168,7 @@ async def hello(ctx):
 @client.command(pass_context = True)
 async def section(ctx, arg = None):
 	arg = arg.lower()
-	if(arg == 'snare' or arg == 'bass' or arg == 'tenor' or arg == 'cymbal' or arg == 'flub'):
+	if(arg == 'snare' or arg == 'bass' or arg == 'tenor' or arg == 'cymbal' or arg == 'multi'):
 		await ctx.send("Got it, you are a " + arg + " player!" "\nGood luck " + arg + " line!")
 		add_section_to_db(ctx.message.author.display_name, arg)
 		print("Section is " + arg + ".")
@@ -197,15 +197,37 @@ async def year(ctx, arg = None):
 
 @client.command(pass_context = True)
 async def assist(ctx):
-	await ctx.send("Hey! My names Spot, The Drumline Tag Bot!  \nThis year I will be helping to keep track of the Drumline Tag score to make your life easier." 
-				   "\nHere is how to use me and my rules \nCommand One: !tag @<name> + <attached image> \nThis command will save the name of the photographer and their victim. "
-				   "When a tag is completed, the photographer gains 3 points and the victim loses 1.  Scores CAN be negative!"
-				   "\nCommand Two: !challenge @<name> This command will be given if a picture seems unfair or is taken to close to practice time. "
-				   "If you fail three challenges you will lose 10 points. If you fail 5, your score will not be accounted for in the final tally."
-				   "\nNow onto my rules \nRule One: One Photo, One @Person.  My brain is very small and I cannot handle a large flux of inputs at once :("
-				   "\nRule Two:  Have Fun, we will determine prizes as the semester goes on so always be on the look out for others."
+	user = ctx.message.author
+	await user.send("Hey! My names Spot, The Drumline Tag Bot!  \nThis year I will be helping to keep track of the Drumline Tag"
+		 		   "score to make your life easier." 
+				   "\nHere is how to use me and my rules"
+				   "\n"
+				   "\nCommand One: !play"
+				   "\nIf you wish to participate in drumline tag, throw your hat in the ring by typing !play."
+				   "\n"
+				   "\nCommand Two: !section <your section>"
+				   "\n(Snare, Bass, Tenor, Cymbol, Multi)"
+				   "\n"
+				   "\nCommand Three: !year <your year>"
+				   "\n(Freshman, Sophomore, Junior, Senior)"
+				   "\n"
+				   "\nCommand Four: !tag @<name> + <attached image>" 
+				   "\nThis command will save the name of the photographer and their victim. "
+				   "When a tag is completed, the photographer gains 3 points and the victim loses 1 point."  
+				   "\nScores CAN be negative!"
+				   "\n"
+				   "\nExample of a proper tag:"
+				   "\nhttps://drive.google.com/file/d/10TcV6A_6CeSYaMS7rETLn0eYdNJZtMMn/view?usp=sharing"
+				   "\n"
+				   "\nNow onto my rules \nRule One: One Photo, One @Person.  My brain is very small and I cannot handle a large" 
+				   "flux of inputs at once :(" 
+				   "\nRule Two: If I break yell at Ben."
+				   "\nRule Three:  Have Fun, we will determine prizes (if any) as the semester goes on so always be on the look out"
+				   "for other members."
 				   "\nHappy tagging and Go Cocks!\n"
-				   "\nLeaderboard: https://drumlinetag.surge.sh/leaderboard")
+				   "\nWebsite: https://drumlinetag.surge.sh/leaderboard"
+				   "\nNote: The website tends to load slow, if you do not see any information when first opening it, that is normal." 
+				   "Give it a bit of time.")
 
 '''
 @client.command()
