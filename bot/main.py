@@ -280,6 +280,7 @@ async def schedule_daily_message():
 	await asyncio.sleep(seconds_until_midnight())
 	channel = client.get_channel(1072933532189589506)
 	print(f"Got channel {channel}")
+	update_mostWanted()
 	await channel.send("I work!")
 
 @schedule_daily_message.before_loop
