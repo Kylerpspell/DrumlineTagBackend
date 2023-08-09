@@ -45,8 +45,7 @@ drummerRoutes.route("/drummers/add").post(function (req, res) {
 		name: req.body.name,
 		year: optionalYear,
 		section: optionalSection,
-		numtags: 0,
-		numtagged: 0
+		isMostWanted: false,
 	};
 	db_connect.collection("drummers").insertOne(myobj, function (err, result) {
 		if (err) throw err;
@@ -89,50 +88,12 @@ drummerRoutes.route("/drummers/:id/updateYear").put(function (req, res) {
 	});
 });
 
-
-
-// Add a tag to a drummer
-drummerRoutes.route("/drummers/:id/addtag").put(function (req, res) {
-	console.log("PUT /drummers/:id/addtag");
+// Update a drummer isMostWanted
+drummerRoutes.route("/drummers/:id/updateIsMostWanted").put(function (req, res) {
+	console.log("PUT /drummers/:id/updateIsMostWanted");
 	let db_connect = dbo.getDb("drumlineData");
 	let myquery = { _id: ObjectId(req.params.id) };
-	let newvalues = { $inc: { numtags: 1 } };
-	db_connect.collection("drummers").updateOne(myquery, newvalues, function (err, result) {
-		if (err) throw err;
-		res.json(result);
-	});
-});
-
-// Remove a tag from a drummer
-drummerRoutes.route("/drummers/:id/removetag").put(function (req, res) {
-	console.log("PUT /drummers/:id/removetag");
-	let db_connect = dbo.getDb("drumlineData");
-	let myquery = { _id: ObjectId(req.params.id) };
-	let newvalues = { $inc: { numtags: -1 } };
-	db_connect.collection("drummers").updateOne(myquery, newvalues, function (err, result) {
-		if (err) throw err;
-		res.json(result);
-	});
-});
-
-// Add a tagged to a drummer
-drummerRoutes.route("/drummers/:id/addtagged").put(function (req, res) {
-	console.log("PUT /drummers/:id/addtagged");
-	let db_connect = dbo.getDb("drumlineData");
-	let myquery = { _id: ObjectId(req.params.id) };
-	let newvalues = { $inc: { numtagged: 1 } };
-	db_connect.collection("drummers").updateOne(myquery, newvalues, function (err, result) {
-		if (err) throw err;
-		res.json(result);
-	});
-});
-
-// Remove a tagged from a drummer
-drummerRoutes.route("/drummers/:id/removetagged").put(function (req, res) {
-	console.log("PUT /drummers/:id/removetagged");
-	let db_connect = dbo.getDb("drumlineData");
-	let myquery = { _id: ObjectId(req.params.id) };
-	let newvalues = { $inc: { numtagged: -1 } };
+	let newvalues = { $set: { isMostWanted: req.body.isMostWanted } };
 	db_connect.collection("drummers").updateOne(myquery, newvalues, function (err, result) {
 		if (err) throw err;
 		res.json(result);

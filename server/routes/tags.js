@@ -15,7 +15,6 @@ tagRoutes.route("/tags").get(function (req, res) {
         });
     });
 
-
 // add a tag
 tagRoutes.route("/tags/add").post(function (req, res) {
     console.log("POST /tags/add");
@@ -26,10 +25,21 @@ tagRoutes.route("/tags/add").post(function (req, res) {
         date: req.body.date,
         img_url: req.body.img_url
     };
-
-    db_connect.collection("tags").insertOne(myobj, function (err, result) {
+    // check to see if the tagged drummer isMostWanted
+    let myquery = { _id: ObjectId(req.body.tagged) };
+    db_connect.collection("drummers").findOne(myquery, function (err, result) {
         if (err) throw err;
-        res.json(result);
+        if (result.isMostWanted == true) {
+            myobj.isOfMostWanted = true;
+            console.log("isMostWanted is true");
+        } else {
+            myobj.isOfMostWanted = false;
+            console.log("isMostWanted is false");
+        }
+        db_connect.collection("tags").insertOne(myobj, function (err, result) {
+            if (err) throw err;
+            res.json(result);
+        });
     });
 });
 
@@ -65,7 +75,5 @@ tagRoutes.route("/tags/:id/remove").delete(function (req, res) {
         res.json(result);
     });
 });
-
-
 
 module.exports = tagRoutes;

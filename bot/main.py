@@ -11,21 +11,24 @@ from apikeys import BOTTOKEN, BACKEND
 
 client = commands.Bot(command_prefix = '!', intents = discord.Intents.all())
 
-
-def tests():
-	# Add section to database
-	add_section_to_db("Benny Boy", "bass")
-	add_section_to_db("DORITO", "cymbals")
-
-
-	# Add year to database
-	add_year_to_db("DORITO", 2023)
-	add_year_to_db("Benny Boy", 2024)
-
-
-	add_tag_to_db("Benny Boy", "DORITO", 'https://media.discordapp.net/attachments/1072933532189589506/1119434180435116093/download.jpg')
-	add_tag_to_db("DORITO", "Benny Boy", 'https://media.discordapp.net/attachments/1072933532189589506/1119434180435116093/download.jpg')
-
+def add_drummer_to_db(drummer_name):
+	# Check to see if the drummer is in the database
+	r = requests.get(BACKEND + "drummers")
+	drummers = r.json()
+	drummer_id = None
+	if drummers is not None:
+		for drummer in drummers:
+			if drummer["name"] == drummer_name:
+				drummer_id = drummer["_id"]
+				break
+	
+	# If the drummer is not in the database, add them
+	if drummer_id is None:
+		r = requests.post(BACKEND + "drummers/add", json={"name": drummer_name})
+		return True
+	else:
+		return False
+	
 def add_tag_to_db(tagger, tagged, img_url):
 	print("Adding tag")
 	# Check to see if the tagger and tagged are in the database
@@ -106,7 +109,36 @@ def add_year_to_db(user, year):
 	# Add the year to the database
 	r = requests.put(BACKEND + "drummers/" + user_id + "/updateYear", json={"year": year})
 
+def change_drummer_isMostWanted(drummer_id, isMostWanted):
+	# Update the drummer in the database
+	r = requests.put(BACKEND + "drummers/" + drummer_id + "/updateIsMostWanted", json={"isMostWanted": isMostWanted})
 
+def update_mostWanted():
+	# Get the drummers from the database
+	r = requests.get(BACKEND + "drummers")
+	drummers = r.json()
+	
+	# Set the most wanted drummer to false
+	for drummer in drummers:
+		change_drummer_isMostWanted(drummer["_id"], False)
+	
+	# Select a random drummer
+	mostWanted = random.choice(drummers)
+	
+	# Set the most wanted drummer to true
+	change_drummer_isMostWanted(mostWanted["_id"], True)
+	print(mostWanted["name"] + " is now the most wanted")
+
+def clear_mostWanted():
+	# Get the drummers from the database
+	r = requests.get(BACKEND + "drummers")
+	drummers = r.json()
+	
+	# Set the most wanted drummer to false
+	for drummer in drummers:
+		change_drummer_isMostWanted(drummer["_id"], False)
+	
+	print("Most wanted cleared")
 
 @client.event
 async def on_ready():
@@ -117,9 +149,10 @@ async def on_ready():
 @client.command(pass_context = True)
 async def play(ctx):
 	playerName = ctx.message.author.display_name
-	requests.post(BACKEND + "drummers/add", json={"name": playerName})
-	await ctx.send("You have been added to the database!")
-
+	if(add_drummer_to_db(playerName)):
+		await ctx.send("You have been added to the database!")
+	else:
+		await ctx.send("You are already in the database!")
 
 @client.command(pass_context = True)
 async def tag(ctx):
