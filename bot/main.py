@@ -257,6 +257,8 @@ async def assist(ctx):
 				   "\nNow onto my rules \nRule One: One Photo, One @Person.  My brain is very small and I cannot handle a large" 
 				   "flux of inputs at once :(" 
 				   "\nRule Two: If I break yell at Ben."
+				   "\nRule Three: Every day at 8 am I will randomly select a 'Most Wanted' player, they will be displayed on the website and" 
+				   "you will score 5 points instead of 3 for tagging them! (They will still only lose one point)"
 				   "\nRule Three:  Have Fun, we will determine prizes (if any) as the semester goes on so always be on the look out"
 				   "for other members."
 				   "\nHappy tagging and Go Cocks!\n"
