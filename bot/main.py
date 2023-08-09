@@ -2,10 +2,11 @@ import discord
 import random
 import uuid
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 import shutil
-from discord.ext import commands
+import asyncio
+from discord.ext import commands, tasks
 from apikeys import BOTTOKEN, BACKEND
 #import Spot
 
@@ -112,6 +113,7 @@ def add_year_to_db(user, year):
 async def on_ready():
 	print("The bot is now ready for use!")
 	print("------------------------------")
+	schedule_daily_message.start()
 
 
 @client.command(pass_context = True)
@@ -228,6 +230,29 @@ async def assist(ctx):
 				   "\nWebsite: https://drumlinetag.surge.sh/leaderboard"
 				   "\nNote: The website tends to load slow, if you do not see any information when first opening it, that is normal." 
 				   "Give it a bit of time.")
+
+def seconds_until_midnight():
+	now = datetime.now()
+	target = (now + timedelta(days=0)).replace(hour=8, minute=0, second=0, microsecond=0)
+	diff = (target - now).total_seconds()
+	if (diff < 0):
+		target = (now + timedelta(days=1)).replace(hour=8, minute=0, second=0, microsecond=0)
+		diff = (target - now).total_seconds()
+	print(f"{target} - {now} = {diff}")
+	return diff
+	
+
+@tasks.loop(seconds =1)
+async def schedule_daily_message():
+	await asyncio.sleep(seconds_until_midnight())
+	channel = client.get_channel(1072933532189589506)
+	print(f"Got channel {channel}")
+	await channel.send("I work!")
+
+@schedule_daily_message.before_loop
+async def before():
+	await client.wait_until_ready()
+	print("Finished waiting")
 
 '''
 @client.command()
