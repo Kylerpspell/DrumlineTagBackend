@@ -233,7 +233,7 @@ async def year(ctx, arg = None):
 @client.command(pass_context = True)
 async def assist(ctx):
 	user = ctx.message.author
-	await user.send("Hey! My names Spot, The Drumline Tag Bot!  \nThis year I will be helping to keep track of the Drumline Tag"
+	await user.send("Hey! My names Spot, The Drumline Tag Bot!  \nThis year I will be helping to keep track of the Drumline Tag "
 		 		   "score to make your life easier." 
 				   "\nHere is how to use me and my rules"
 				   "\n"
@@ -254,12 +254,13 @@ async def assist(ctx):
 				   "\nExample of a proper tag:"
 				   "\nhttps://drive.google.com/file/d/10TcV6A_6CeSYaMS7rETLn0eYdNJZtMMn/view?usp=sharing"
 				   "\n"
-				   "\nNow onto my rules \nRule One: One Photo, One @Person.  My brain is very small and I cannot handle a large" 
+				   "\nNow onto my rules \nRule One: One Photo, One @Person.  My brain is very small and I cannot handle a large " 
 				   "flux of inputs at once :(" 
 				   "\nRule Two: If I break yell at Ben."
-				   "\nRule Three: Every day at 8 am I will randomly select a 'Most Wanted' player, they will be displayed on the website and" 
-				   "you will score 5 points instead of 3 for tagging them! (They will still only lose one point)"
-				   "\nRule Three:  Have Fun, we will determine prizes (if any) as the semester goes on so always be on the look out"
+				   "\nRule Three: Every day at 8 am I will randomly select a 'Most Wanted' player, they will be displayed on the website and " 
+				   "you will score 5 points instead of 3 for tagging them!"
+				   "\n(They will still only lose one point)"
+				   "\nRule Three:  Have Fun, we will determine prizes (if any) as the semester goes on so always be on the look out "
 				   "for other members."
 				   "\nHappy tagging and Go Cocks!\n"
 				   "\nWebsite: https://drumlinetag.surge.sh/leaderboard"
