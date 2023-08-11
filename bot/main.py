@@ -158,7 +158,7 @@ async def play(ctx):
 
 @client.command(pass_context = True)
 async def tag(ctx):
-		roll = int(random.randint(1,6))
+		roll = int(random.randint(1,9))
 		try:
 			tagged = ctx.message.mentions[0].display_name
 			tagger = ctx.message.author.display_name
@@ -191,6 +191,12 @@ async def tag(ctx):
 					await ctx.send("When I was young my dad use to hit me with a Polaroid. I still get instant flashbacks...")
 				if roll == 6:
 					await ctx.send("They never saw it coming...")
+				if roll == 7:
+					await ctx.send("Behind you!")
+				if roll == 8:
+					await ctx.send("I had to give up my career as a professional photographer... \nI kept losing focus...")
+				if roll == 9:
+					await ctx.send("Photography is a developing hobby")
 				await ctx.send("Sorry {}".format(tagged))
 
 				add_tag_to_db(ctx.message.author.display_name, tagged, url)
