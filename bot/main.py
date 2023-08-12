@@ -230,7 +230,7 @@ async def section(ctx, arg = None):
 @client.command(pass_context = True)
 async def year(ctx, arg = None):
 	arg = arg.lower()
-	if(arg == 'super senior' or arg == 'senior' or arg == 'junior' or arg == 'sophomore' or arg == 'freshman'):
+	if(arg == 'super-senior' or arg == 'senior' or arg == 'junior' or arg == 'sophomore' or arg == 'freshman'):
 		await ctx.send("Got it, you are a " + arg + "\nWe can't wait for you to do big things this semester!")
 		add_year_to_db(ctx.message.author.display_name, arg)
 		print("Year is " + arg + ".")
@@ -238,7 +238,7 @@ async def year(ctx, arg = None):
 		await ctx.send("That is not a valid year...")
 		print("Invalid year.")
 	if(arg == None):
-		await ctx.send("Be sure to enter what class year you are after typing in !year (Super Senior, Senior, Junior, Sophomore, or Freshman)")
+		await ctx.send("Be sure to enter what class year you are after typing in !year (Super-Senior, Senior, Junior, Sophomore, or Freshman)")
 		print("Did not enter a year")
 
 
