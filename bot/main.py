@@ -172,36 +172,40 @@ async def tag(ctx):
 				print("Error: No attachments")
 				await ctx.send("Boop Boop Beep.  \nERROR  \nThere is no picture here! \nBe sure to attach an image!")
 			else:
-				if url[0:26] == "https://cdn.discordapp.com":
-					r = requests.get(url, stream=True)
-					imageName = str(uuid.uuid4()) + '.jpg'
-					with open(imageName, 'wb') as out_file:
-						print('Saving image: ' + imageName)
-						shutil.copyfileobj(r.raw, out_file)
-				await ctx.send(tagger + " tagged " + tagged)
-				if roll == 1:
-						await ctx.send("*Click* Caught in 4K")
-				if roll == 2:
-					await ctx.send("You hate to see it...")
-				if roll == 3:
-					await ctx.send("Lookin good!")
-				if roll == 4:
-					await ctx.send("That's gonna look great on my wall!")
-				if roll == 5:
-					await ctx.send("When I was young my dad use to hit me with a Polaroid. I still get instant flashbacks...")
-				if roll == 6:
-					await ctx.send("They never saw it coming...")
-				if roll == 7:
-					await ctx.send("Behind you!")
-				if roll == 8:
-					await ctx.send("I had to give up my career as a professional photographer... \nI kept losing focus...")
-				if roll == 9:
-					await ctx.send("Photography is a developing hobby")
-				if roll == 10:
-					await ctx.send("I always feel like somebody is watching me...")
-				await ctx.send("Sorry {}".format(tagged))
+				if tagged != "Spot":
+					if url[0:26] == "https://cdn.discordapp.com" and tagged != "Spot":
+						r = requests.get(url, stream=True)
+						imageName = str(uuid.uuid4()) + '.jpg'
+						with open(imageName, 'wb') as out_file:
+							print('Saving image: ' + imageName)
+							shutil.copyfileobj(r.raw, out_file)
+					await ctx.send(tagger + " tagged " + tagged)
+					if roll == 1:
+							await ctx.send("*Click* Caught in 4K")
+					if roll == 2:
+						await ctx.send("You hate to see it...")
+					if roll == 3:
+						await ctx.send("Lookin good!")
+					if roll == 4:
+						await ctx.send("That's gonna look great on my wall!")
+					if roll == 5:
+						await ctx.send("When I was young my dad use to hit me with a Polaroid. I still get instant flashbacks...")
+					if roll == 6:
+						await ctx.send("They never saw it coming...")
+					if roll == 7:
+						await ctx.send("Behind you!")
+					if roll == 8:
+						await ctx.send("I had to give up my career as a professional photographer... \nI kept losing focus...")
+					if roll == 9:
+						await ctx.send("Photography is a developing hobby")
+					if roll == 10:
+						await ctx.send("I always feel like somebody is watching me...")
+					await ctx.send("Sorry {}".format(tagged))
 
-				add_tag_to_db(ctx.message.author.display_name, tagged, url)
+					add_tag_to_db(ctx.message.author.display_name, tagged, url)
+
+				if tagged == "Spot":
+					await ctx.send("Trying to get free points?  \nNice try, but I'm not a Drumline member :)")
 		
 
 @client.command(pass_context = True)
@@ -226,7 +230,7 @@ async def section(ctx, arg = None):
 @client.command(pass_context = True)
 async def year(ctx, arg = None):
 	arg = arg.lower()
-	if(arg == 'senior' or arg == 'junior' or arg == 'sophomore' or arg == 'freshman'):
+	if(arg == 'super senior' or arg == 'senior' or arg == 'junior' or arg == 'sophomore' or arg == 'freshman'):
 		await ctx.send("Got it, you are a " + arg + "\nWe can't wait for you to do big things this semester!")
 		add_year_to_db(ctx.message.author.display_name, arg)
 		print("Year is " + arg + ".")
@@ -234,46 +238,53 @@ async def year(ctx, arg = None):
 		await ctx.send("That is not a valid year...")
 		print("Invalid year.")
 	if(arg == None):
-		await ctx.send("Be sure to enter what class year you are after typing in !year (Senior, Junior, Sophomore, or Freshman)")
+		await ctx.send("Be sure to enter what class year you are after typing in !year (Super Senior, Senior, Junior, Sophomore, or Freshman)")
 		print("Did not enter a year")
 
 
 @client.command(pass_context = True)
 async def assist(ctx):
 	user = ctx.message.author
-	await user.send("Hey! My names Spot, The Drumline Tag Bot!  \nThis year I will be helping to keep track of the Drumline Tag "
-		 		   "score to make your life easier." 
-				   "\nHere is how to use me and my rules"
-				   "\n"
-				   "\nCommand One: !play"
-				   "\nIf you wish to participate in drumline tag, throw your hat in the ring by typing !play."
-				   "\n"
-				   "\nCommand Two: !section <your section>"
-				   "\n(Snare, Bass, Tenor, Cymbol, Multi)"
-				   "\n"
-				   "\nCommand Three: !year <your year>"
-				   "\n(Freshman, Sophomore, Junior, Senior)"
-				   "\n"
-				   "\nCommand Four: !tag @<name> + <attached image>" 
-				   "\nThis command will save the name of the photographer and their victim. "
-				   "When a tag is completed, the photographer gains 3 points and the victim loses 1 point."  
-				   "\nScores CAN be negative!"
-				   "\n"
-				   "\nExample of a proper tag:"
-				   "\nhttps://drive.google.com/file/d/10TcV6A_6CeSYaMS7rETLn0eYdNJZtMMn/view?usp=sharing"
-				   "\n"
-				   "\nNow onto my rules \nRule One: One Photo, One @Person.  My brain is very small and I cannot handle a large " 
-				   "flux of inputs at once :(" 
-				   "\nRule Two: If I break yell at Ben."
-				   "\nRule Three: Every day at 8 am I will randomly select a \"Most Wanted\" player, they will be displayed on the website and " 
-				   "you will score 5 points instead of 3 for tagging them!"
-				   "\n(They will still only lose one point)"
-				   "\nRule Three:  Have Fun, we will determine prizes (if any) as the semester goes on so always be on the look out "
-				   "for other members."
-				   "\nHappy tagging and Go Cocks!\n"
-				   "\nWebsite: https://drumlinetag.surge.sh/leaderboard"
-				   "\nNote: The website tends to load slow, if you do not see any information when first opening it, that is normal." 
-				   "Give it a bit of time.")
+	await user.send("Hey! My name is Spot, The Drumline Tag Bot!  \nThis year I will be helping to keep track of the Drumline Tag "
+		 		    "score to make your life easier."
+					"\n" 
+				   	"\nHere is how I work and my rules:"
+				   	"\n"
+				   	"\nCommand One: !play"
+				   	"\nIf you wish to participate in Drumline Tag, throw your hat in the ring by typing !play."
+				   	"\n"
+				   	"\nCommand Two: !section <your section>"
+				   	"\n(Snare, Bass, Tenor, Cymbol, Multi)"
+				   	"\n"
+				   	"\nCommand Three: !year <your year>"
+				   	"\n(Freshman, Sophomore, Junior, Senior)"
+				   	"\n"
+				   	"\nCommand Four: !tag @<name> + <attached image>" 
+				   	"\nThis command will save the name of the photographer and their victim. "
+				   	"When a tag is completed, the photographer gains 3 points and the victim loses 1 point."  
+				   	"\nScores CAN be negative!"
+				   	"\n"
+				   	"\nExample of a proper tag:"
+				   	"\nhttps://drive.google.com/file/d/10TcV6A_6CeSYaMS7rETLn0eYdNJZtMMn/view?usp=sharing"
+				   	"\n"
+				   	"\nNow onto my rules: "
+				   	"\n"
+				   	"\nRule One: One photo, One @person.  My brain is very small and I cannot handle a large " 
+				   	"number of inputs at once :(" 
+				   	"\nRule Two: If I break, talk to Ben."
+				   	"\nRule Three: Every day at 8 am I will randomly select a \"Most Wanted\" player. They will be displayed on the website and " 
+				   	"you will score 5 points instead of 3 for tagging them!"
+				   	"\n(They will still only lose one point)"
+				   	"\nRule Four:  Have fun! \nWe will determine prizes (if any) as the semester goes on so always be on the look out "
+				   	"for other members."
+				   	"\nRule Five: NO FOUL IMAGES"
+				   	"\nIf you break this rule you will be given one warning. If you continue to post vulgar images, your score will be scrapped, "
+				   	"and you will be removed from the game. \n(Depending on the context of the image, a warning may not be issued and you will be removed immediately)"
+				   	"\n"
+				   	"\nHappy tagging and Go Cocks!\n"
+				   	"\nWebsite: https://drumlinetag.surge.sh/leaderboard"
+				   	"\nNote: The website tends to load slow, if you do not see any information when first opening it, that is normal. " 
+				   	"Give it a bit of time.")
 
 def seconds_until_midnight():
 	now = datetime.now()
