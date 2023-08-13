@@ -269,7 +269,7 @@ async def assist(ctx):
 				   	"\n"
 				   	"\nNow onto my rules: "
 				   	"\n"
-					"\nRule One: You only recive points if the person you are trying to tag does not see you before you post the tag"
+					"\nRule One: You only recive points if the person you are trying to tag does not see you before you post the tag."
 				   	"\nRule Two: One photo, One @person.  My brain is very small and I cannot handle a large " 
 				   	"number of inputs at once :(" 
 				   	"\nRule Three: If I break, talk to Ben."
