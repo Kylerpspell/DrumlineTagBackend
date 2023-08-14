@@ -301,7 +301,7 @@ def seconds_until_midnight():
 @tasks.loop(seconds =1)
 async def schedule_daily_message():
 	await asyncio.sleep(seconds_until_midnight())
-	channel = client.get_channel(1072933532189589506)
+	channel = client.get_channel(1137604123898945578)
 	print(f"Got channel {channel}")
 	update_mostWanted()
 	await channel.send("I work!")
