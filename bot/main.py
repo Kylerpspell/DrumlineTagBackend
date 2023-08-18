@@ -291,10 +291,10 @@ async def assist(ctx):
 
 def seconds_until_midnight():
 	now = datetime.now()
-	target = (now + timedelta(days=0)).replace(hour=22, minute=25, second=0, microsecond=0)
+	target = (now + timedelta(days=0)).replace(hour=8, minute=0, second=0, microsecond=0)
 	diff = (target - now).total_seconds()
 	if (diff < 0):
-		target = (now + timedelta(days=1)).replace(hour=22, minute=25, second=0, microsecond=0)
+		target = (now + timedelta(days=1)).replace(hour=8, minute=0, second=0, microsecond=0)
 		diff = (target - now).total_seconds()
 	print(f"{target} - {now} = {diff}")
 	return diff
