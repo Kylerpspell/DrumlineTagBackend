@@ -113,7 +113,6 @@ def add_year_to_db(user, year):
 def change_drummer_isMostWanted(drummer_id, isMostWanted):
 	# Update the drummer in the database
 	r = requests.put(BACKEND + "drummers/" + drummer_id + "/updateIsMostWanted", json={"isMostWanted": isMostWanted})
-
 def update_mostWanted():
 	# Get the drummers from the database
 	r = requests.get(BACKEND + "drummers")
@@ -131,6 +130,8 @@ def update_mostWanted():
 	# Set the most wanted drummer to true
 	change_drummer_isMostWanted(mostWanted["_id"], True)
 	print(mostWanted["name"] + " is now the most wanted")
+	Name = mostWanted["name"]
+	return Name
 
 def clear_mostWanted():
 	# Get the drummers from the database
@@ -305,8 +306,7 @@ async def schedule_daily_message():
 	await asyncio.sleep(seconds_until_midnight())
 	channel = client.get_channel(1137604123898945578)
 	print(f"Got channel {channel}")
-	update_mostWanted()
-	await channel.send("I work!")
+	await channel.send(update_mostWanted() + " is now wanted!")
 
 @schedule_daily_message.before_loop
 async def before():
