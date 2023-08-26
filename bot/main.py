@@ -292,10 +292,10 @@ async def assist(ctx):
 
 def seconds_until_midnight():
 	now = datetime.now()
-	target = (now + timedelta(days=0)).replace(hour=8, minute=0, second=0, microsecond=0)
+	target = (now + timedelta(days=0)).replace(hour=20, minute=3, second=0, microsecond=0)
 	diff = (target - now).total_seconds()
 	if (diff < 0):
-		target = (now + timedelta(days=1)).replace(hour=8, minute=0, second=0, microsecond=0)
+		target = (now + timedelta(days=1)).replace(hour=20, minute=3, second=0, microsecond=0)
 		diff = (target - now).total_seconds()
 	print(f"{target} - {now} = {diff}")
 	return diff
@@ -304,7 +304,7 @@ def seconds_until_midnight():
 @tasks.loop(seconds =1)
 async def schedule_daily_message():
 	await asyncio.sleep(seconds_until_midnight())
-	channel = client.get_channel(1137604123898945578)
+	channel = client.get_channel(1144783433827106907)
 	print(f"Got channel {channel}")
 	await channel.send(update_mostWanted() + " is now wanted!")
 
