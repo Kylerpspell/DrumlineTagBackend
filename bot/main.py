@@ -161,7 +161,7 @@ async def play(ctx):
 
 @client.command(pass_context = True)
 async def tag(ctx):
-		roll = int(random.randint(1,10))
+		roll = int(random.randint(1,19))
 		try:
 			tagged = ctx.message.mentions[0].display_name
 			tagger = ctx.message.author.display_name
@@ -202,7 +202,25 @@ async def tag(ctx):
 					if roll == 9:
 						await ctx.send("Photography is a developing hobby")
 					if roll == 10:
-						await ctx.send("I always feel like somebody is watching me...")
+						await ctx.send("Say click! Take a pic \nCan you find the drummer/crasher in this photo?")
+					if roll == 11:
+						await ctx.send("Tagged, just like a trending meme! \nAdding this one to the folder")
+					if roll == 12:
+						await ctx.send("Caught in the act, tag-style! \nThey are going to be so pissed...")
+					if roll == 13:
+						await ctx.send("You've been caught, but not for ransom!")
+					if roll == 14:
+						await ctx.send("Tagged and bagged \nIn a friendly way!")
+					if roll == 15:
+						await ctx.send("Tagged... \nJust a reminder you are never alone")
+					if roll == 16:
+						await ctx.send("Tagged! \nJust like a ghost in the night")
+					if roll == 17:
+						await ctx.send("Bang the drums! \nTag the players!")
+					if roll == 18:
+						await ctx.send("Syncopated tagging! \nYou're it!")
+					if roll == 19:
+						await ctx.send("Cymbal crash and tag dash! \nDon't drop the camera!")
 					await ctx.send("Sorry {}".format(tagged))
 
 					add_tag_to_db(ctx.message.author.display_name, tagged, url)
@@ -257,7 +275,7 @@ async def assist(ctx):
 				   	"\nIf you wish to participate in Drumline Tag, throw your hat in the ring by typing !play."
 				   	"\n"
 				   	"\nCommand Two: !section <your section>"
-				   	"\n(Snare, Bass, Tenor, Cymbol, Multi)"
+				   	"\n(Snare, Bass, Tenor, Cymbal, Multi)"
 				   	"\n"
 				   	"\nCommand Three: !year <your year>"
 				   	"\n(Freshman, Sophomore, Junior, Senior)"
