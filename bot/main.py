@@ -333,15 +333,20 @@ async def assist(ctx):
 				   	"\nScores CAN be negative!"
 				   	"\n"
 				   	"\nExample of a proper tag:"
-				   	"\nhttps://drive.google.com/file/d/10TcV6A_6CeSYaMS7rETLn0eYdNJZtMMn/view?usp=sharing"
-				   	"\n"
-				   	"\nNow onto my rules: "
+				   	"\nhttps://drive.google.com/file/d/10TcV6A_6CeSYaMS7rETLn0eYdNJZtMMn/view?usp=sharing")
+
+@client.command(pass_context = True)
+async def rules(ctx):
+	user = ctx.message.author
+	await user.send("\nHear ye, hear ye.  Obey my rules or face the consequences: "
 				   	"\n"
 					"\nRule One: You only recive points if the person you are trying to tag does not see you before you post the tag."
 				   	"\nRule Two: One photo, One @person.  My brain is very small and I cannot handle a large " 
 				   	"number of inputs at once :(" 
 				   	"\nRule Three: If I break, talk to Ben."
-					"\nRule Four: (placeholder)"
+					"\nRule Four: Team tags! (patent pending) \nA team tag involves three people.  Person one tags person two for the regular 3 points."
+					"\nHowever, if person three tags person one while they still have their phone or camera out, person one and three will recieve 9 points and person two will lose 9 points."
+					"\n(Please note: these images must be reviewed by Admin)"
 				   	"\nRule Five:  Have fun! \nWe will determine prizes (if any) as the semester goes on so always be on the look out "
 				   	"for other members."
 				   	"\nRule Six: NO FOUL IMAGES"
