@@ -3,7 +3,6 @@ import random
 import uuid
 import requests
 from datetime import datetime, timedelta
-from colorama import Fore, Back, Style
 import json
 import shutil
 import asyncio
@@ -339,7 +338,7 @@ async def assist(ctx):
 @client.command(pass_context = True)
 async def rules(ctx):
 	user = ctx.message.author
-	await user.send(f'```ini\n["\nHear ye, hear ye.  Obey my rules or face the consequences:"]\n```'
+	await user.send("\nHear ye, hear ye.  Obey my rules or face the consequences: "
 				   	"\n\n"
 					"\nRule One: You only recive points if the person you are trying to tag does not see you before you post the tag."
 					"\n"
