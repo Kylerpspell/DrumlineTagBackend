@@ -188,6 +188,8 @@ async def tag(ctx):
 							shutil.copyfileobj(r.raw, out_file)
 					await ctx.send("HOLD IT!!! \n" + tagger + " tagged " + tagged +"!!!")
 					await ctx.send("What's the verdict admin, is it a double tag?")
+
+					# MIGHT NEED TO BE DONE IN VALIDATE AND INVALIDATE COMMAND
 					# If pass
 					if flag == 1:
 						await ctx.send(tagger + " and " + tagged + " gain 9 points and " + prevtagged + " loses 9 points!")
@@ -257,15 +259,15 @@ async def tag(ctx):
 @discord.ext.commands.has_role(1278417532847652876)
 async def validate(ctx):
 	await ctx.send("Hello Admin!")
-	flag = 1
-	await ctx.send("Flag is now " + str(flag))
+	#await ctx.send("Flag is now " + str(flag))
+	# Add and deduct points
 
 @client.command(pass_context = True)
 @discord.ext.commands.has_role(1278417532847652876)
 async def invalidate(ctx):
 	await ctx.send("Hello Admin!")
-	#flag = 2
-	await ctx.send("Flag is now " + str(flag))
+	#await ctx.send("Flag is now " + str(flag))
+	# Break
 
 @client.command(pass_context = True)
 async def hello(ctx):
