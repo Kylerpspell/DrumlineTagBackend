@@ -186,7 +186,7 @@ async def tag(ctx):
 							print('Saving image: ' + imageName)
 							shutil.copyfileobj(r.raw, out_file)
 					await ctx.send("HOLD IT!!! \n" + tagger + " tagged " + tagged +"!!!")
-					await ctx.send("What's the verdict admin?")
+					await ctx.send("What's the verdict admin, is it a double tag?")
 					# If pass
 					if flag == 1:
 						await ctx.send(tagger + " and " + tagged + " gain 9 points and " + prevtagged + " loses 9 points!")
@@ -195,7 +195,7 @@ async def tag(ctx):
 						prevtagged = tagged
 					# If fail
 					if flag == 2:
-						await ctx.send("No cigar, better luck next time")
+						await ctx.send("No dice.")
 
 				#In the event a single tag happens
 				if tagged != "Spot":
@@ -253,20 +253,14 @@ async def tag(ctx):
 					await ctx.send("Trying to get free points?  \nNice try, but I'm not a Drumline member :)")
 
 @client.command(pass_context = True)
+@discord.ext.commands.has_role(1278417532847652876)
 async def validate(ctx):
-	if ctx.message.roles.find('name', 'Admin'):
-		await ctx.send("Hello {}!".format(ctx.message.author.mention))
-		flag = 1
-	else:
-		await ctx.send("You are not an admin...")
+	await ctx.send("Hello Admin!")
 
 @client.command(pass_context = True)
+@discord.ext.commands.has_role(1278417532847652876)
 async def invalidate(ctx):
-	if ctx.message.roles.find('name', 'Admin'):
-		await ctx.send("Hello {}!".format(ctx.message.author.mention))
-		flag = 2
-	else:
-		await ctx.send("You are not an admin...")
+	await ctx.send("Hello Admin!")
 
 @client.command(pass_context = True)
 async def hello(ctx):
