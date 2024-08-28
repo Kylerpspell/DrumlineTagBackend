@@ -331,6 +331,8 @@ async def assist(ctx):
 				   	"\nThis command will save the name of the photographer and their victim. "
 				   	"When a tag is completed, the photographer gains 3 points and the victim loses 1 point."  
 				   	"\nScores CAN be negative!"
+					"\n"
+					"\nFor the rules of tag, type !rules"
 				   	"\n"
 				   	"\nExample of a proper tag:"
 				   	"\nhttps://drive.google.com/file/d/10TcV6A_6CeSYaMS7rETLn0eYdNJZtMMn/view?usp=sharing")
