@@ -110,45 +110,45 @@ def add_year_to_db(user, year):
 	# Add the year to the database
 	r = requests.put(BACKEND + "drummers/" + user_id + "/updateYear", json={"year": year})
 
-def change_drummer_isMostWanted(drummer_id, isMostWanted):
-	# Update the drummer in the database
-	r = requests.put(BACKEND + "drummers/" + drummer_id + "/updateIsMostWanted", json={"isMostWanted": isMostWanted})
-def update_mostWanted():
-	# Get the drummers from the database
-	r = requests.get(BACKEND + "drummers")
-	drummers = r.json()
+# def change_drummer_isMostWanted(drummer_id, isMostWanted):
+# 	# Update the drummer in the database
+# 	r = requests.put(BACKEND + "drummers/" + drummer_id + "/updateIsMostWanted", json={"isMostWanted": isMostWanted})
+# def update_mostWanted():
+# 	# Get the drummers from the database
+# 	r = requests.get(BACKEND + "drummers")
+# 	drummers = r.json()
 	
-	# Set the most wanted drummer to false
-	for drummer in drummers:
-		change_drummer_isMostWanted(drummer["_id"], False)
+# 	# Set the most wanted drummer to false
+# 	for drummer in drummers:
+# 		change_drummer_isMostWanted(drummer["_id"], False)
 	
-	# Select a random drummer
-	for i in range(10):
-		mostWanted = random.choice(drummers)
-		print(mostWanted["name"])
-	print(mostWanted["name"])
-	# Set the most wanted drummer to true
-	change_drummer_isMostWanted(mostWanted["_id"], True)
-	print(mostWanted["name"] + " is now the most wanted")
-	Name = mostWanted["name"]
-	return Name
+# 	# Select a random drummer
+# 	for i in range(10):
+# 		mostWanted = random.choice(drummers)
+# 		print(mostWanted["name"])
+# 	print(mostWanted["name"])
+# 	# Set the most wanted drummer to true
+# 	change_drummer_isMostWanted(mostWanted["_id"], True)
+# 	print(mostWanted["name"] + " is now the most wanted")
+# 	Name = mostWanted["name"]
+# 	return Name
 
-def clear_mostWanted():
-	# Get the drummers from the database
-	r = requests.get(BACKEND + "drummers")
-	drummers = r.json()
+# def clear_mostWanted():
+# 	# Get the drummers from the database
+# 	r = requests.get(BACKEND + "drummers")
+# 	drummers = r.json()
 	
-	# Set the most wanted drummer to false
-	for drummer in drummers:
-		change_drummer_isMostWanted(drummer["_id"], False)
+# 	# Set the most wanted drummer to false
+# 	for drummer in drummers:
+# 		change_drummer_isMostWanted(drummer["_id"], False)
 	
-	print("Most wanted cleared")
+# 	print("Most wanted cleared")
 
 @client.event
 async def on_ready():
 	print("The bot is now ready for use!")
 	print("------------------------------")
-	schedule_daily_message.start()
+	#schedule_daily_message.start()
 
 
 @client.command(pass_context = True)
@@ -175,6 +175,29 @@ async def tag(ctx):
 				print("Error: No attachments")
 				await ctx.send("Boop Boop Beep.  \nERROR  \nThere is no picture here! \nBe sure to attach an image!")
 			else:
+				#In the event a double tag happens
+				if tagged != "Spot" and tagged == prevtagger and prevtagged != None and prevtagger != None:
+					global flag
+					flag = 0
+					if url[0:26] == "https://cdn.discordapp.com" and tagged != "Spot":
+						r = requests.get(url, stream=True)
+						imageName = str(uuid.uuid4()) + '.jpg'
+						with open(imageName, 'wb') as out_file:
+							print('Saving image: ' + imageName)
+							shutil.copyfileobj(r.raw, out_file)
+					await ctx.send("HOLD IT!!! \n" + tagger + " tagged " + tagged +"!!!")
+					await ctx.send("What's the verdict admin?")
+					# If pass
+					if flag == 1:
+						await ctx.send(tagger + " and " + tagged + " gain 9 points and " + prevtagged + " loses 9 points!")
+						await ctx.send("I love a good combo...")
+						prevtagger = tagger
+						prevtagged = tagged
+					# If fail
+					if flag == 2:
+						await ctx.send("No cigar, better luck next time")
+
+				#In the event a single tag happens
 				if tagged != "Spot":
 					if url[0:26] == "https://cdn.discordapp.com" and tagged != "Spot":
 						r = requests.get(url, stream=True)
@@ -206,10 +229,26 @@ async def tag(ctx):
 					await ctx.send("Sorry {}".format(tagged))
 
 					add_tag_to_db(ctx.message.author.display_name, tagged, url)
-
+					prevtagger = tagger
+					prevtagged = tagged
 				if tagged == "Spot":
 					await ctx.send("Trying to get free points?  \nNice try, but I'm not a Drumline member :)")
-		
+
+@client.command(pass_context = True)
+async def validate(ctx):
+	if ctx.message.roles.find('name', 'Admin'):
+		await ctx.send("Hello {}!".format(ctx.message.author.mention))
+		flag = 1
+	else:
+		await ctx.send("You are not an admin...")
+
+@client.command(pass_context = True)
+async def invalidate(ctx):
+	if ctx.message.roles.find('name', 'Admin'):
+		await ctx.send("Hello {}!".format(ctx.message.author.mention))
+		flag = 2
+	else:
+		await ctx.send("You are not an admin...")
 
 @client.command(pass_context = True)
 async def hello(ctx):
@@ -276,9 +315,12 @@ async def assist(ctx):
 				   	"\nRule Two: One photo, One @person.  My brain is very small and I cannot handle a large " 
 				   	"number of inputs at once :(" 
 				   	"\nRule Three: If I break, talk to Ben."
-				   	"\nRule Four: Every day at 8 am I will randomly select a \"Most Wanted\" player. They will be displayed on the website and " 
-				   	"you will score 5 points instead of 3 for tagging them!"
-				   	"\n(They will still only lose one point)"
+				   	# "\nRule Four: Every day at 8 am I will randomly select a \"Most Wanted\" player. They will be displayed on the website and " 
+				   	# "you will score 5 points instead of 3 for tagging them!"
+				   	# "\n(They will still only lose one point)"
+					"\nRule Four: Team tags! (patent pending) \nA team tag involves three people.  Person one tags person two for the regular 3 points."
+					"\nHowever, if person three tags person one while they still have their phone or camera out, person one and three will recieve 9 points and person two will lose 9 points."
+					"\n(Please note: these images must be reviewed by Patrick before scoring takes place)"
 				   	"\nRule Five:  Have fun! \nWe will determine prizes (if any) as the semester goes on so always be on the look out "
 				   	"for other members."
 				   	"\nRule Six: NO FOUL IMAGES"
@@ -290,28 +332,28 @@ async def assist(ctx):
 				   	"\nNote: The website tends to load slow, if you do not see any information when first opening it, that is normal. " 
 				   	"Give it a bit of time.")
 
-def seconds_until_midnight():
-	now = datetime.now()
-	target = (now + timedelta(days=0)).replace(hour=8, minute=0, second=0, microsecond=0)
-	diff = (target - now).total_seconds()
-	if (diff < 0):
-		target = (now + timedelta(days=1)).replace(hour=8, minute=0, second=0, microsecond=0)
-		diff = (target - now).total_seconds()
-	print(f"{target} - {now} = {diff}")
-	return diff
+# def seconds_until_midnight():
+# 	now = datetime.now()
+# 	target = (now + timedelta(days=0)).replace(hour=8, minute=0, second=0, microsecond=0)
+# 	diff = (target - now).total_seconds()
+# 	if (diff < 0):
+# 		target = (now + timedelta(days=1)).replace(hour=8, minute=0, second=0, microsecond=0)
+# 		diff = (target - now).total_seconds()
+# 	print(f"{target} - {now} = {diff}")
+# 	return diff
 	
 
-@tasks.loop(seconds =1)
-async def schedule_daily_message():
-	await asyncio.sleep(seconds_until_midnight())
-	channel = client.get_channel(1144783433827106907)
-	print(f"Got channel {channel}")
-	await channel.send(update_mostWanted() + " is now wanted!")
+# @tasks.loop(seconds =1)
+# async def schedule_daily_message():
+# 	await asyncio.sleep(seconds_until_midnight())
+# 	channel = client.get_channel(1144783433827106907)
+# 	print(f"Got channel {channel}")
+# 	await channel.send(update_mostWanted() + " is now wanted!")
 
-@schedule_daily_message.before_loop
-async def before():
-	await client.wait_until_ready()
-	print("Finished waiting")
+# @schedule_daily_message.before_loop
+# async def before():
+# 	await client.wait_until_ready()
+# 	print("Finished waiting")
 
 '''
 @client.command()
