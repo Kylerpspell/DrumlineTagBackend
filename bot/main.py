@@ -10,6 +10,9 @@ from discord.ext import commands, tasks
 from apikeys import BOTTOKEN, BACKEND
 #import Spot
 
+global flag
+flag = 0
+
 client = commands.Bot(command_prefix = '!', intents = discord.Intents.all())
 
 def add_drummer_to_db(drummer_name):
@@ -177,8 +180,6 @@ async def tag(ctx):
 			else:
 				#In the event a double tag happens
 				if tagged != "Spot" and tagged == prevtagger and prevtagged != None and prevtagger != None:
-					global flag
-					flag = 0
 					if url[0:26] == "https://cdn.discordapp.com" and tagged != "Spot":
 						r = requests.get(url, stream=True)
 						imageName = str(uuid.uuid4()) + '.jpg'
@@ -256,11 +257,15 @@ async def tag(ctx):
 @discord.ext.commands.has_role(1278417532847652876)
 async def validate(ctx):
 	await ctx.send("Hello Admin!")
+	flag = 1
+	await ctx.send("Flag is now " + str(flag))
 
 @client.command(pass_context = True)
 @discord.ext.commands.has_role(1278417532847652876)
 async def invalidate(ctx):
 	await ctx.send("Hello Admin!")
+	#flag = 2
+	await ctx.send("Flag is now " + str(flag))
 
 @client.command(pass_context = True)
 async def hello(ctx):
