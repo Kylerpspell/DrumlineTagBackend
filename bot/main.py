@@ -339,7 +339,7 @@ async def assist(ctx):
 @client.command(pass_context = True)
 async def rules(ctx):
 	user = ctx.message.author
-	await user.send(f'```ini\n["\nHear ye, hear ye.  Obey my rules or face the consequences: "
+	await user.send(f'```ini\n["\nHear ye, hear ye.  Obey my rules or face the consequences:"]\n```'
 				   	"\n\n"
 					"\nRule One: You only recive points if the person you are trying to tag does not see you before you post the tag."
 					"\n"
@@ -362,7 +362,7 @@ async def rules(ctx):
 					"\nHappy tagging and Go Cocks!\n"
 				   	"\nWebsite: https://drumlinetag.surge.sh/leaderboard"
 				   	"\nNote: The website tends to load slow, if you do not see any information when first opening it, that is normal. " 
-				   	"Give it a bit of time."]\n```')
+				   	"Give it a bit of time.")
 
 # def seconds_until_midnight():
 # 	now = datetime.now()
