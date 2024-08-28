@@ -301,7 +301,10 @@ async def year(ctx, arg = None):
 		await ctx.send("Be sure to enter what class year you are after typing in !year (Super-Senior, Senior, Junior, Sophomore, or Freshman)")
 		print("Did not enter a year")
 
-
+# Old message
+# "\nRule Four: Every day at 8 am I will randomly select a \"Most Wanted\" player. They will be displayed on the website and " 
+				   	# "you will score 5 points instead of 3 for tagging them!"
+				   	# "\n(They will still only lose one point)"
 @client.command(pass_context = True)
 async def assist(ctx):
 	user = ctx.message.author
@@ -333,12 +336,9 @@ async def assist(ctx):
 				   	"\nRule Two: One photo, One @person.  My brain is very small and I cannot handle a large " 
 				   	"number of inputs at once :(" 
 				   	"\nRule Three: If I break, talk to Ben."
-				   	# "\nRule Four: Every day at 8 am I will randomly select a \"Most Wanted\" player. They will be displayed on the website and " 
-				   	# "you will score 5 points instead of 3 for tagging them!"
-				   	# "\n(They will still only lose one point)"
 					"\nRule Four: Team tags! (patent pending) \nA team tag involves three people.  Person one tags person two for the regular 3 points."
 					"\nHowever, if person three tags person one while they still have their phone or camera out, person one and three will recieve 9 points and person two will lose 9 points."
-					"\n(Please note: these images must be reviewed by Patrick before scoring takes place)"
+					"\n(Please note: these images must be reviewed by Admin)"
 				   	"\nRule Five:  Have fun! \nWe will determine prizes (if any) as the semester goes on so always be on the look out "
 				   	"for other members."
 				   	"\nRule Six: NO FOUL IMAGES"
